@@ -5,50 +5,341 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>مودات ماين كرافت بالعربية</title>
 
-  <!-- خط عربي واضح -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-  <!-- أيقونات -->
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root{
+      --bg:#fff8f2;
+      --card:#ffffff;
+      --orange:#f39c12;
+      --orange-dark:#d67e07;
+      --text:#222;
+      --muted:#666;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:linear-gradient(90deg,#fff3e0,#fff5e6);border-bottom:1px solid rgba(0,0,0,0.03);position:sticky;top:0;z-index:40}
+    .logo{font-weight:700;color:var(--orange);text-decoration:none}
+    .nav-right a{margin-left:14px;text-decoration:none;color:var(--text);font-weight:600}
+    .container{max-width:1000px;margin:16px auto;padding:0 16px}
+    .hero{text-align:center;margin-bottom:12px}
+    .hero h1{margin:8px 0 6px;font-size:1.6rem;color:var(--orange-dark)}
+    .lead{color:var(--muted);margin:0}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} }
+
+    .mods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+    .mod{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .18s ease}
+    .mod:hover{transform:translateY(-6px)}
+    .thumb{width:100%;height:150px;object-fit:cover;background:#eee}
+    .body{padding:12px;display:flex;flex-direction:column;gap:8px}
+    .mod h3{margin:0;color:var(--orange-dark);font-size:1.05rem}
+    .muted{color:var(--muted)}
+    .actions{display:flex;gap:8px;align-items:center;margin-top:auto}
+    .btn{display:inline-block;padding:8px 12px;border-radius:999px;text-decoration:none;font-weight:700;border:none;cursor:pointer}
+    .btn.primary{background:var(--orange);color:white}
+    .btn.ghost{background:transparent;border:1px solid #eee;color:var(--text)}
+    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+    label{display:block;margin:10px 0 6px;font-weight:700;color:var(--orange-dark)}
+    input[type="text"],input[type="url"],input[type="password"],textarea,input[type="file"]{width:100%;padding:10px;border-radius:8px;border:1px solid #eee;background:#fbfbfb;font-size:0.95rem}
+    textarea{resize:vertical;min-height:80px}
+    .small{font-size:0.9rem}
+    .muted-small{color:var(--muted);font-size:0.88rem;margin-top:8px}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:80}
+    .modal.hidden{display:none}
+    .modal-content{background:white;border-radius:12px;max-width:820px;width:100%;position:relative;padding:18px;box-shadow:0 20px 40px rgba(0,0,0,0.2);max-height:92vh;overflow:auto}
+    .close-btn{position:absolute;left:12px;top:12px;border:none;background:transparent;font-size:18px;cursor:pointer;color:#999}
+    .comment{border-top:1px solid #f5f5f5;padding:10px 0}
+    .center{text-align:center}
+  </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-left">
-    <a class="logo" href="index.html"><i class="fa-solid fa-cubes"></i> مودات ماين كرافت بالعربية</a>
-  </div>
-  <div class="nav-right">
-    <a href="index.html">الرئيسية</a>
-    <a href="upload.html">رفع مود</a>
-    <a href="news.html">الأخبار</a>
-  </div>
-</nav>
-
-<main class="container">
-  <header class="hero">
-    <h1>مودات ماين كرافت بالعربية</h1>
-    <p class="lead">تحميل، رفع، والتعليق — كله بسهولة. (نشر وحذف فقط مع كود خاص)</p>
-  </header>
-
-  <section>
-    <h2 class="section-title"><i class="fa-solid fa-layer-group"></i> المودات</h2>
-    <div id="modsGrid" class="mods-grid">
-      <!-- البطاقات يتم توليدها بالديناميكية -->
+  <nav class="nav">
+    <div class="nav-left"><a class="logo" href="#"><i class="fa-solid fa-cubes"></i> مودات ماين كرافت بالعربية</a></div>
+    <div class="nav-right">
+      <a href="#mods">المودات</a>
+      <a href="#upload">رفع مود</a>
     </div>
-    <p id="noMods" class="muted" style="display:none">لا يوجد مودات حتى الآن — اضغط "رفع مود" لإضافة أول مود.</p>
-  </section>
-</main>
+  </nav>
 
-<!-- نافذة تعليق / تفصيل -->
-<div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <button class="close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
-    <div id="modalBody"></div>
+  <main class="container">
+    <div class="hero">
+      <h1>مودات ماين كرافت بالعربية</h1>
+      <p class="lead">نشر مودات، مشاهدة، والتعليق — النشر والحذف فقط بكود خاص.</p>
+    </div>
+
+    <div class="grid">
+      <div>
+        <section id="mods">
+          <h2 style="margin:6px 0"><i class="fa-solid fa-layer-group"></i> المودات</h2>
+          <div id="modsGrid" class="mods-grid"></div>
+          <p id="noMods" class="muted center" style="display:none">لا يوجد مودات حتى الآن — كن أول من ينشر!</p>
+        </section>
+      </div>
+
+      <aside>
+        <section id="upload" class="card" style="margin-bottom:14px">
+          <h3>نشر مود جديد</h3>
+          <form id="uploadForm">
+            <label>كود النشر</label>
+            <input id="publishCode" type="password" placeholder="أدخل الكود (مثال: ANIS2006)" required>
+
+            <label>اسم المود</label>
+            <input id="modName" type="text" placeholder="مثال: مود الظلال" required>
+
+            <label>وصف المود</label>
+            <textarea id="modDesc" placeholder="وصف قصير للمود" required></textarea>
+
+            <label>رابط فيديو (يوتيوب) - اختياري</label>
+            <input id="modVideo" type="url" placeholder="https://youtube.com/..." />
+
+            <label>صورة المود (JPEG/PNG)</label>
+            <input id="modImage" type="file" accept="image/*" required>
+
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <button type="submit" class="btn primary"><i class="fa-solid fa-upload"></i> نشر</button>
+              <button type="button" id="clearBtn" class="btn">مسح الحقول</button>
+            </div>
+
+            <p class="muted-small">ملاحظة: الصور تُرفع إلى Supabase Storage (bucket: <b>mods-images</b>). النشر والحذف يتطلبان الكود: <b>ANIS2006</b>.</p>
+          </form>
+        </section>
+
+        <section class="card">
+          <h3>ملاحظة</h3>
+          <p class="muted">للحماية الأفضل لاحقًا ستفعّل سياسات RLS وتستخدم حسابات للمُدراء. الآن وضع العَرْض/القراءة/الكتابة مُتاح مؤقتًا للـ anon لتجربة الموقع.</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- modal -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+      <div id="modalBody"></div>
+    </div>
   </div>
-</div>
 
-<script src="script.js"></script>
+<script>
+/* ========== إعدادات Supabase ========== */
+/* هذه القيم هي تلك التي أعطيتني إياها */
+const SUPABASE_URL = "https://yxsmwhxjjlbmrssmqjkj.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4c213aHhqamxibXJzc21xamtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5NjczNDMsImV4cCI6MjA3MDU0MzM0M30.rw-AalS6d-TNEGeicePNoVJyJEJFM8wLmeZ_Wk9jS78";
+
+/* انشاء العميل */
+const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* الكود الخاص */
+const SECRET = "ANIS2006";
+
+/* عناصر DOM */
+const modsGrid = document.getElementById("modsGrid");
+const noMods = document.getElementById("noMods");
+const uploadForm = document.getElementById("uploadForm");
+const closeModalBtn = document.getElementById("closeModal");
+const modal = document.getElementById("modal");
+const modalBody = document.getElementById("modalBody");
+
+/* id سريع */
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+/* تحميل المودات وعرضها */
+async function loadMods(){
+  try{
+    const { data, error } = await supabase.from('mods').select('*').order('created_at', { ascending: false });
+    if(error) throw error;
+    renderMods(data || []);
+  }catch(err){
+    console.error(err);
+    modsGrid.innerHTML = "<p class='muted'>حدث خطأ عند جلب المودات.</p>";
+  }
+}
+
+/* عرض المودات */
+function renderMods(items){
+  modsGrid.innerHTML = "";
+  if(!items || items.length===0){ noMods.style.display = "block"; return; }
+  noMods.style.display = "none";
+  items.forEach(mod=>{
+    const el = document.createElement("div");
+    el.className = "mod";
+    const img = mod.image_url || mod.image_path ? getPublicUrl(mod.image_path || mod.image_url) : '';
+    el.innerHTML = `
+      <img class="thumb" src="${escapeHtml(img)}" alt="${escapeHtml(mod.title||mod.name||'')}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22140%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23eee%22/></svg>'"/>
+      <div class="body">
+        <h3>${escapeHtml(mod.title||mod.name||'') }</h3>
+        <p class="muted">${escapeHtml(truncate(mod.description||'', 120))}</p>
+        <div class="actions">
+          <button class="btn primary" onclick="openDetails('${mod.id}')"><i class="fa-solid fa-circle-info"></i> التفاصيل</button>
+          <button class="btn ghost" onclick="promptDelete('${mod.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+        </div>
+      </div>
+    `;
+    modsGrid.appendChild(el);
+  });
+}
+
+function truncate(s,n){ if(!s) return ''; return s.length>n ? s.slice(0,n-1)+'…' : s; }
+function escapeHtml(s){ if(s==null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;'); }
+
+/* الحصول على publicUrl من مسار التخزين أو إرجاع الرابط مباشرة */
+function getPublicUrl(pathOrUrl){
+  if(!pathOrUrl) return '';
+  if(pathOrUrl.startsWith('http')) return pathOrUrl;
+  // مسار من bucket
+  const { data } = supabase.storage.from('mods-images').getPublicUrl(pathOrUrl);
+  return data?.publicUrl || '';
+}
+
+/* فتح التفاصيل + عرض التعليقات */
+async function openDetails(id){
+  try{
+    const { data: mod } = await supabase.from('mods').select('*').eq('id', id).single();
+    if(!mod) return alert("المود غير موجود");
+    const { data: comments } = await supabase.from('comments').select('*').eq('mod_id', id).order('created_at', { ascending: false });
+    modalBody.innerHTML = `
+      <h2>${escapeHtml(mod.title||mod.name||'')}</h2>
+      ${mod.image_path || mod.image_url ? `<img src="${getPublicUrl(mod.image_path || mod.image_url)}" style="width:100%;max-height:320px;object-fit:cover;border-radius:8px;margin:8px 0"/>` : ''}
+      <p>${escapeHtml(mod.description||'')}</p>
+      ${mod.video_url ? `<p><a href="${escapeHtml(mod.video_url)}" target="_blank" class="btn primary"><i class="fa-solid fa-play"></i> مشاهدة الفيديو</a></p>` : ''}
+      <hr/>
+      <h4>التعليقات (${(comments||[]).length})</h4>
+      <div id="commentsList">${(comments||[]).map(c=>`<div class="comment"><b>${escapeHtml(c.name||'مستخدم')}</b><p>${escapeHtml(c.text||c.content||'')}</p><small class="muted">${new Date(c.created_at).toLocaleString()}</small></div>`).join('') || '<p class="muted">لا يوجد تعليقات بعد.</p>'}</div>
+      <label>اسمك (اختياري)</label>
+      <input id="commentName" placeholder="اسمك"/>
+      <label>نص التعليق</label>
+      <textarea id="commentText" rows="3" placeholder="اكتب تعليقك"></textarea>
+      <div style="margin-top:8px"><button class="btn primary" onclick="postComment('${id}')"><i class="fa-solid fa-paper-plane"></i> نشر التعليق</button></div>
+    `;
+    modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false');
+  }catch(err){
+    console.error(err);
+    alert("خطأ في فتح التفاصيل");
+  }
+}
+
+/* اغلاق المودال */
+closeModalBtn.addEventListener('click', ()=>{ modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true'); });
+
+/* نشر تعليق */
+async function postComment(modId){
+  const name = document.getElementById('commentName').value.trim();
+  const text = document.getElementById('commentText').value.trim();
+  if(!text) return alert("اكتب تعليقاً");
+  try{
+    const payload = { mod_id: modId, name: name || 'مستخدم', text };
+    // Try column name 'content' or 'text' depending on table
+    const { error: e1 } = await supabase.from('comments').insert([{ mod_id: modId, name: name || 'مستخدم', content: text }]);
+    if(e1){
+      // fallback if 'content' column doesn't exist
+      await supabase.from('comments').insert([{ mod_id: modId, name: name || 'مستخدم', text }]);
+    }
+    alert("تم نشر التعليق");
+    openDetails(modId);
+  }catch(err){
+    console.error(err);
+    alert("فشل نشر التعليق");
+  }
+}
+
+/* طلب حذف — يتحقق من الكود */
+function promptDelete(id){
+  const code = prompt("أدخل كود الحذف:");
+  if(!code) return;
+  if(code !== SECRET) return alert("الكود غير صحيح.");
+  deleteMod(id);
+}
+
+/* حذف المود (يحذف سجل + يحاول حذف الملف من التخزين) */
+async function deleteMod(id){
+  try{
+    const { data: mod, error: fetchErr } = await supabase.from('mods').select('*').eq('id', id).single();
+    if(fetchErr) throw fetchErr;
+    // محاولة حذف ملف من التخزين إن وجد path
+    let path = mod.image_path || null;
+    if(!path && mod.image_url){
+      // نحاول استخراج المسار من public URL
+      const prefix = `${SUPABASE_URL}/storage/v1/object/public/mods-images/`;
+      if(mod.image_url.startsWith(prefix)) path = mod.image_url.slice(prefix.length);
+    }
+    if(path){
+      await supabase.storage.from('mods-images').remove([path]).catch(()=>{});
+    }
+    // حذف تعليقات مرتبطة (محاولة بنوعي الحقول)
+    await supabase.from('comments').delete().eq('mod_id', id).catch(()=>{});
+    // حذف السجل
+    const { error } = await supabase.from('mods').delete().eq('id', id);
+    if(error) throw error;
+    alert("تم حذف المود.");
+    loadMods();
+    modal.classList.add('hidden');
+  }catch(err){
+    console.error(err);
+    alert("فشل حذف المود.");
+  }
+}
+
+/* رفع صورة ثم حفظ السجل في جدول mods */
+uploadForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const code = document.getElementById('publishCode').value.trim();
+  if(code !== SECRET) return alert("الكود السري غير صحيح.");
+
+  const title = document.getElementById('modName').value.trim();
+  const description = document.getElementById('modDesc').value.trim();
+  const video = document.getElementById('modVideo').value.trim();
+  const file = document.getElementById('modImage').files[0];
+
+  if(!title || !description) return alert("املأ الاسم والوصف.");
+  if(!file) return alert("اختر صورة للمود.");
+
+  try{
+    // اسم ملف فريد
+    const ext = file.name.split('.').pop();
+    const filename = `${uid()}.${ext}`;
+
+    // رفع للصنف mods-images
+    const { data: uploadData, error: uploadErr } = await supabase.storage.from('mods-images').upload(filename, file, { cacheControl: '3600', upsert: false });
+    if(uploadErr) throw uploadErr;
+
+    // الحصول على public URL
+    const { data: publicData } = supabase.storage.from('mods-images').getPublicUrl(filename);
+    const publicUrl = publicData?.publicUrl || '';
+
+    // نحاول إدراج السجل مع image_url و image_path (إن لم يكن image_path عمودًا فنجرب بدونه)
+    let insertPayload = { title, description, video_url: video || null, image_url: publicUrl, image_path: filename };
+    let { error: insertErr } = await supabase.from('mods').insert([insertPayload]);
+    if(insertErr){
+      // محاولة بسيطة: حذف image_path من الحمولة لو لم يكن العمود موجودًا
+      delete insertPayload.image_path;
+      const { error: insertErr2 } = await supabase.from('mods').insert([insertPayload]);
+      if(insertErr2) throw insertErr2;
+    }
+
+    alert("تم نشر المود بنجاح!");
+    uploadForm.reset();
+    loadMods();
+    window.location.hash = "#mods";
+  }catch(err){
+    console.error("خطأ عند النشر:", err);
+    alert("فشل نشر المود. تأكد من إعدادات Supabase (جدول mods و bucket mods-images) وأن مفتاح anon صالح.");
+  }
+});
+
+/* مسح الحقول */
+document.getElementById('clearBtn').addEventListener('click', ()=> uploadForm.reset());
+
+/* تحميل عند فتح الصفحة */
+document.addEventListener('DOMContentLoaded', loadMods);
+</script>
+
 </body>
 </html>
