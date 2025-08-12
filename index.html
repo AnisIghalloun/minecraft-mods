@@ -1,71 +1,54 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>مودات ماين كرافت بالعربية</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
+
+  <!-- خط عربي واضح -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- أيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<nav>
-  <div><a href="index.html">الرئيسية</a></div>
-  <div>
-    <a href="upload.html">رفع مود جديد</a>
-    <a href="news.html">أخبار ماين كرافت</a>
+<nav class="nav">
+  <div class="nav-left">
+    <a class="logo" href="index.html"><i class="fa-solid fa-cubes"></i> مودات ماين كرافت بالعربية</a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html">الرئيسية</a>
+    <a href="upload.html">رفع مود</a>
+    <a href="news.html">الأخبار</a>
   </div>
 </nav>
 
-<header class="container">
-  <h1>مودات ماين كرافت بالعربية</h1>
-  <p>أفضل مودات ماين كرافت مع وصف وروابط تحميل سهلة</p>
-</header>
-
 <main class="container">
-  <section>
-    <h2>مودات جرافيك</h2>
-    <div class="mods-grid">
-      <div class="mod-card">
-        <img src="images/graphic1.jpg" alt="مود جرافيك 1" />
-        <div class="mod-content">
-          <h3>مود جرافيك 1</h3>
-          <p>تحسين الإضاءة وتأثيرات خاصة للعبة.</p>
-          <a class="download-btn" href="https://example.com/mod1.zip" target="_blank" rel="noopener noreferrer">تحميل</a>
-        </div>
-      </div>
-      <!-- أضف المزيد من المودات هنا -->
-    </div>
-  </section>
+  <header class="hero">
+    <h1>مودات ماين كرافت بالعربية</h1>
+    <p class="lead">تحميل، رفع، والتعليق — كله بسهولة. (نشر وحذف فقط مع كود خاص)</p>
+  </header>
 
   <section>
-    <h2>مودات أسلحة</h2>
-    <div class="mods-grid">
-      <div class="mod-card">
-        <img src="images/weapon1.jpg" alt="مود سلاح 1" />
-        <div class="mod-content">
-          <h3>مود سلاح 1</h3>
-          <p>أسلحة جديدة مع قدرات مذهلة.</p>
-          <a class="download-btn" href="https://example.com/mod2.zip" target="_blank" rel="noopener noreferrer">تحميل</a>
-        </div>
-      </div>
+    <h2 class="section-title"><i class="fa-solid fa-layer-group"></i> المودات</h2>
+    <div id="modsGrid" class="mods-grid">
+      <!-- البطاقات يتم توليدها بالديناميكية -->
     </div>
-  </section>
-
-  <section>
-    <h2>مودات ماب</h2>
-    <div class="mods-grid">
-      <div class="mod-card">
-        <img src="images/map1.jpg" alt="مود ماب 1" />
-        <div class="mod-content">
-          <h3>مود ماب 1</h3>
-          <p>خريطة مغامرات جديدة وممتعة.</p>
-          <a class="download-btn" href="https://example.com/mod3.zip" target="_blank" rel="noopener noreferrer">تحميل</a>
-        </div>
-      </div>
-    </div>
+    <p id="noMods" class="muted" style="display:none">لا يوجد مودات حتى الآن — اضغط "رفع مود" لإضافة أول مود.</p>
   </section>
 </main>
 
+<!-- نافذة تعليق / تفصيل -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

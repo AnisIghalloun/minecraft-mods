@@ -1,30 +1,57 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>رفع مود جديد - مودات ماين كرافت بالعربية</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>رفع مود - مودات ماين كرافت بالعربية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<nav>
-  <div><a href="index.html">الرئيسية</a></div>
-  <div>
-    <a href="upload.html">رفع مود جديد</a>
-    <a href="news.html">أخبار ماين كرافت</a>
+<nav class="nav">
+  <div class="nav-left">
+    <a class="logo" href="index.html"><i class="fa-solid fa-cubes"></i> مودات ماين كرافت بالعربية</a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html">الرئيسية</a>
+    <a href="upload.html">رفع مود</a>
+    <a href="news.html">الأخبار</a>
   </div>
 </nav>
 
-<header class="container">
-  <h1>رفع مود جديد</h1>
-  <p>استخدم النموذج أدناه لإرسال مود جديد لنشره في الموقع.</p>
-</header>
-
 <main class="container">
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfF4PZFmB8-HZyQYVgD7T5m3QX5Y6M2RHvTcZp3W_UC7RlG1g/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">جارٍ التحميل…</iframe>
+  <header class="hero small">
+    <h1>رفع مود جديد</h1>
+    <p class="lead">املأ الحقول أدناه ثم اضغط "نشر". يجب إدخال الكود الخاص للنشر.</p>
+  </header>
+
+  <form id="uploadForm" class="card">
+    <label>كود النشر</label>
+    <input id="publishCode" type="text" placeholder="اكتب الكود هنا (مثل ANIS2006)" required/>
+
+    <label>اسم المود</label>
+    <input id="modName" type="text" placeholder="مثال: مود الظلال" required/>
+
+    <label>وصف المود</label>
+    <textarea id="modDesc" rows="4" placeholder="وصف قصير للمود" required></textarea>
+
+    <label>رابط فيديو (اختياري)</label>
+    <input id="modVideo" type="url" placeholder="https://youtube.com/..." />
+
+    <label>صورة المود (اختياري — اختر ملف)</label>
+    <input id="modImage" type="file" accept="image/*" />
+
+    <div class="actions">
+      <button type="submit" class="btn primary"><i class="fa-solid fa-upload"></i> نشر المود</button>
+      <a href="index.html" class="btn">عودة</a>
+    </div>
+
+    <p class="muted small">ملاحظة: البيانات تحفظ محليًا على متصفحك فقط (LocalStorage). للحفظ الدائم نحتاج سيرفر.</p>
+  </form>
 </main>
 
+<script src="script.js"></script>
 </body>
 </html>
