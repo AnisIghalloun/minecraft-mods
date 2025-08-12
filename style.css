@@ -1,0 +1,164 @@
+/* الألوان الأساسية */
+:root {
+  --emerald: #2ecc71; /* زمردي */
+  --soft-orange: #f39c12; /* برتقالي هادي */
+  --bg-color: #f4f6f7;
+  --text-color: #2c3e50;
+  --nav-bg: #27ae60;
+  --nav-text: #ecf0f1;
+}
+
+/* إعدادات عامة */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* شريط التنقل */
+nav {
+  background-color: var(--nav-bg);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav a {
+  color: var(--nav-text);
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 600;
+  font-size: 1.1em;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--soft-orange);
+}
+
+/* العنوان الرئيسي */
+header h1 {
+  margin: 0;
+  color: var(--emerald);
+}
+
+/* المحتوى */
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+/* المودات */
+.mods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+  gap: 20px;
+}
+
+.mod-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mod-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.mod-content {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.mod-content h3 {
+  margin-top: 0;
+  color: var(--nav-bg);
+}
+
+.mod-content p {
+  font-size: 0.95em;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.mod-content a.download-btn {
+  background-color: var(--soft-orange);
+  color: white;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.mod-content a.download-btn:hover {
+  background-color: #d67e07;
+}
+
+/* نموذج رفع مود */
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--nav-bg);
+}
+
+form input, form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+
+form button {
+  background-color: var(--emerald);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #27ae60;
+}
+
+/* أخبار */
+.news-item {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.news-item h3 {
+  margin-top: 0;
+  color: var(--nav-bg);
+}
+
+.news-item p {
+  font-size: 1em;
+  line-height: 1.5;
+}
