@@ -16,7 +16,7 @@
   </div>
   <div class="nav-right">
     <a href="index.html">الرئيسية</a>
-    <a href="upload.html">رفع مود</a>
+    <a href="upload.html" aria-current="page">رفع مود</a>
     <a href="news.html">الأخبار</a>
   </div>
 </nav>
@@ -27,28 +27,28 @@
     <p class="lead">املأ الحقول أدناه ثم اضغط "نشر". يجب إدخال الكود الخاص للنشر.</p>
   </header>
 
-  <form id="uploadForm" class="card">
-    <label>كود النشر</label>
-    <input id="publishCode" type="text" placeholder="اكتب الكود هنا (مثل ANIS2006)" required/>
+  <form id="uploadForm" class="card" novalidate>
+    <label for="publishCode">كود النشر</label>
+    <input id="publishCode" type="text" placeholder="اكتب الكود هنا (مثل ANIS2006)" required aria-describedby="codeHelp" />
 
-    <label>اسم المود</label>
-    <input id="modName" type="text" placeholder="مثال: مود الظلال" required/>
+    <label for="modName">اسم المود</label>
+    <input id="modName" type="text" placeholder="مثال: مود الظلال" required />
 
-    <label>وصف المود</label>
+    <label for="modDesc">وصف المود</label>
     <textarea id="modDesc" rows="4" placeholder="وصف قصير للمود" required></textarea>
 
-    <label>رابط فيديو (اختياري)</label>
-    <input id="modVideo" type="url" placeholder="https://youtube.com/..." />
+    <label for="modVideo">رابط فيديو (اختياري)</label>
+    <input id="modVideo" type="url" placeholder="https://youtube.com/..." pattern="https?://.+" title="ادخل رابط صحيح يبدأ بـ http:// أو https://" />
 
-    <label>صورة المود (اختياري — اختر ملف)</label>
+    <label for="modImage">صورة المود (اختياري — اختر ملف)</label>
     <input id="modImage" type="file" accept="image/*" />
 
-    <div class="actions">
-      <button type="submit" class="btn primary"><i class="fa-solid fa-upload"></i> نشر المود</button>
-      <a href="index.html" class="btn">عودة</a>
+    <div class="actions" style="margin-top:16px;">
+      <button type="submit" class="btn primary" aria-label="نشر المود"><i class="fa-solid fa-upload"></i> نشر المود</button>
+      <a href="index.html" class="btn" aria-label="عودة إلى الصفحة الرئيسية">عودة</a>
     </div>
 
-    <p class="muted small">ملاحظة: البيانات تحفظ محليًا على متصفحك فقط (LocalStorage). للحفظ الدائم نحتاج سيرفر.</p>
+    <p id="codeHelp" class="muted small" style="margin-top:12px;">ملاحظة: البيانات تحفظ محليًا على متصفحك فقط (LocalStorage). للحفظ الدائم نحتاج سيرفر.</p>
   </form>
 </main>
 

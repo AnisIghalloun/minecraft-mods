@@ -1,15 +1,8 @@
-/* script.js
-   حفظ المودات والتعليقات في localStorage
-   كود النشر/الحذف: ANIS2006
-*/
-
 const STORAGE_KEY = "mc_mods_v1";
 const CODE = "ANIS2006";
 
-/* مساعدة صغيرة لإنشاء ID */
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 
-/* جلب المودات من التخزين */
 function loadMods(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -20,12 +13,10 @@ function loadMods(){
   }
 }
 
-/* حفظ المودات */
 function saveMods(mods){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(mods));
 }
 
-/* تحويل صورة إلى base64 */
 function fileToDataUrl(file){ 
   return new Promise((res, rej)=>{
     if(!file) return res(null);
@@ -36,7 +27,6 @@ function fileToDataUrl(file){
   });
 }
 
-/* عرض المودات في الصفحة الرئيسية */
 function renderMods(){
   const container = document.getElementById("modsGrid");
   const noMods = document.getElementById("noMods");
@@ -63,7 +53,6 @@ function renderMods(){
   });
 }
 
-/* فتح نافذة التفاصيل + تعليقات */
 function openMod(e){
   e.preventDefault();
   const id = e.currentTarget.dataset.id;
@@ -92,12 +81,13 @@ function openMod(e){
   modal.classList.remove("hidden");
 }
 
-/* غلق المودال */
-document.getElementById && document.getElementById("closeModal") && document.getElementById("closeModal").addEventListener("click", ()=>{
-  document.getElementById("modal").classList.add("hidden");
-});
+const closeBtn = document.getElementById("closeModal");
+if(closeBtn){
+  closeBtn.addEventListener("click", ()=>{
+    document.getElementById("modal").classList.add("hidden");
+  });
+}
 
-/* تعليقات: مفتاح لكل مود */
 function commentsKey(modId){ return `comments_${modId}`; }
 function loadComments(modId){
   const list = document.getElementById("commentsList");
@@ -118,9 +108,7 @@ function postComment(modId){
   loadComments(modId);
 }
 
-/* نشر مود من صفحة upload.html */
-async function handleUploadForm(e){
-  if(!document.getElementById) return;
+function handleUploadForm(){
   const form = document.getElementById("uploadForm");
   if(!form) return;
   form.addEventListener("submit", async function(ev){
@@ -131,41 +119,39 @@ async function handleUploadForm(e){
     const desc = document.getElementById("modDesc").value.trim();
     const video = document.getElementById("modVideo").value.trim();
     const file = document.getElementById("modImage").files[0];
+    if(!file){
+      return alert("يرجى اختيار صورة للمود.");
+    }
     const dataUrl = await fileToDataUrl(file).catch(()=>null);
     const mods = loadMods();
     const newMod = { id: uid(), name, desc, video: video || "", image: dataUrl || "", created: Date.now() };
     mods.push(newMod);
     saveMods(mods);
     alert("تم نشر المود بنجاح!");
-    // redirect to home
     window.location.href = "index.html";
   });
 }
 
-/* طلب حذف مود - يطلب الكود */
 function requestDelete(e){
   e.preventDefault();
   const id = e.currentTarget.dataset.id;
   const entered = prompt("لحذف هذا المود أدخل كود الحذف:").trim();
   if(!entered) return;
   if(entered !== CODE) return alert("الكود غير صحيح. لا يمكنك الحذف.");
-  // حذف
   let mods = loadMods();
   mods = mods.filter(m=>m.id !== id);
   saveMods(mods);
-  // حذف التعليقات المرتبطة
   localStorage.removeItem(commentsKey(id));
   alert("تم حذف المود.");
+  document.getElementById("modal").classList.add("hidden");
   renderMods();
 }
 
-/* هروب من XSS بسيط */
 function escapeHtml(s){
-  if(!s && s !== "") return "";
+  if(typeof s !== "string") return "";
   return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
 }
 
-/* تهيئة لما يفتح كل صفحة */
 document.addEventListener("DOMContentLoaded", ()=>{
   renderMods();
   handleUploadForm();

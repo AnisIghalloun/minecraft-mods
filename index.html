@@ -396,7 +396,7 @@
 </nav>
 
 <main class="container" aria-live="polite" aria-relevant="additions removals">
-  <!-- هنا تروّج المودات -->
+  <!-- هنا توضع المودات -->
 </main>
 
 <!-- نافذة إضافة مود -->
@@ -441,35 +441,45 @@
 </div>
 
 <script>
+  // إعدادات Supabase
   const SUPABASE_URL = "https://yxsmwhxjjlbmrssmqjkj.supabase.co";
   const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4c213aHhqamxibXJzc21xamtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5NjczNDMsImV4cCI6MjA3MDU0MzM0M30.rw-AalS6d-TNEGeicePNoVJyJEJFM8wLmeZ_Wk9jS78";
   const SECRET_CODE = "ANIS2006";
 
-  const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // إنشاء عميل Supabase
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  // عناصر DOM
   const mainContainer = document.querySelector("main.container");
   const openAddModBtn = document.getElementById("openAddMod");
   const addModModal = document.getElementById("addModModal");
   const modDetailsModal = document.getElementById("modDetailsModal");
   const modDetailsContent = document.getElementById("modDetailsContent");
+  const addModForm = document.getElementById("addModForm");
 
-  // فتح/إغلاق النوافذ
+  // دالة لفتح النوافذ
   function openModal(modal) {
     modal.classList.add("active");
     modal.setAttribute("aria-hidden", "false");
-    modal.querySelector("form, #modDetailsContent").focus();
+    // اجعل التركيز على أول عنصر داخل المحتوى (نموذج أو تفاصيل)
+    const focusElem = modal.querySelector("form, #modDetailsContent");
+    if (focusElem) focusElem.focus();
   }
+
+  // دالة إغلاق النوافذ
   function closeModal(modal) {
     modal.classList.remove("active");
     modal.setAttribute("aria-hidden", "true");
   }
+
   // إغلاق عند الضغط على زر الإغلاق
   document.querySelectorAll(".modal-close").forEach((btn) =>
     btn.addEventListener("click", () => {
       closeModal(btn.closest(".modal"));
     })
   );
+
   // إغلاق عند الضغط خارج المحتوى
   document.querySelectorAll(".modal").forEach((modal) => {
     modal.addEventListener("click", (e) => {
@@ -477,44 +487,34 @@
     });
   });
 
-  // عرض المودات
+  // فتح نافذة إضافة مود عند الضغط على الزر
+  openAddModBtn.addEventListener("click", () => {
+    openModal(addModModal);
+  });
+
+  // وظيفة مساعدة لترميز HTML لتجنب مشاكل XSS
+  function escapeHtml(text) {
+    if (!text) return "";
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  // تقصير النص لعدد معين من الحروف
+  function truncate(str, n) {
+    return str.length > n ? str.slice(0, n) + "…" : str;
+  }
+
+  // الحصول على رابط عام للصورة من Supabase Storage
+  function getPublicUrl(path) {
+    if (!path) return "";
+    const { data } = supabase.storage.from("mods-images").getPublicUrl(path);
+    return data.publicUrl;
+  }
+
+  // تحميل وعرض المودات
   async function loadMods() {
-    try {
-      const { data, error } = await supabase
-        .from("mods")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-
-      if (!data || data.length === 0) {
-        mainContainer.innerHTML =
-          '<p class="no-mods">لا يوجد مودات حتى الآن — كن أول من ينشر!</p>';
-        return;
-      }
-
-      mainContainer.innerHTML = "";
-      data.forEach((mod) => {
-        const card = document.createElement("article");
-        card.className = "mod-card";
-        const imgUrl = mod.image_path
-          ? getPublicUrl(mod.image_path)
-          : mod.image_url || "";
-
-        card.innerHTML = `
-          <img class="mod-thumb" src="${escapeHtml(imgUrl)}" alt="صورة ${escapeHtml(
-          mod.title
-        )}" loading="lazy" />
-          <div class="mod-body">
-            <h3 class="mod-title">${escapeHtml(mod.title)}</h3>
-            <p class="mod-desc">${escapeHtml(truncate(mod.description, 140))}</p>
-            <div class="mod-actions">
-              <button class="action-btn" aria-label="عرض تفاصيل مود ${escapeHtml(
-                mod.title
-              )}" data-id="${mod.id}" data-action="view"><i class="fa-solid fa-circle-info"></i> التفاصيل</button>
-              <button class="action-btn" aria-label="حذف مود ${escapeHtml(
-                mod.title
-              )}" data-id="${mod.id}" data-action="delete"><i class="fa-solid fa-trash"></i> حذف</button>
-            </div>
-          </div>
-        `;
-        mainContainer.appendChild(card
+    try
