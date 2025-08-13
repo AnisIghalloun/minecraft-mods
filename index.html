@@ -1,520 +1,58 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>مودات ماين كرافت بالعربية</title>
-
-<!-- Supabase JS -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
-<!-- خطوط وأيقونات -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet" />
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-/>
-
-<style>
-  :root {
-    --orange: #f39c12;
-    --orange-dark: #d67e07;
-    --emerald: #2ecc71;
-    --bg: #fff8f2;
-    --card: #fff;
-    --text: #222;
-    --muted: #666;
-    --shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    --radius: 12px;
-    --transition: 0.3s ease;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: 'Cairo', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  nav {
-    background: linear-gradient(90deg, #fff3e0, #fff5e6);
-    padding: 12px 20px;
-    box-shadow: var(--shadow);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    font-weight: 700;
-    color: var(--orange);
-    font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .logo i {
-    font-size: 1.6rem;
-  }
-  button#openAddMod {
-    background: var(--orange);
-    border: none;
-    padding: 10px 16px;
-    border-radius: var(--radius);
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background var(--transition);
-  }
-  button#openAddMod:hover {
-    background: var(--orange-dark);
-  }
-
-  main.container {
-    flex-grow: 1;
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 0 16px 40px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-    gap: 18px;
-  }
-
-  /* بطاقة المود */
-  .mod-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: transform var(--transition);
-  }
-  .mod-card:hover {
-    transform: translateY(-6px);
-  }
-  .mod-thumb {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    background: #eee;
-  }
-  .mod-body {
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-  .mod-title {
-    margin: 0 0 8px;
-    font-weight: 700;
-    color: var(--orange-dark);
-    font-size: 1.15rem;
-  }
-  .mod-desc {
-    flex-grow: 1;
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-    white-space: pre-wrap;
-  }
-  .mod-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-  }
-  button.action-btn {
-    background: transparent;
-    border: 2px solid var(--orange);
-    color: var(--orange);
-    padding: 6px 14px;
-    font-weight: 700;
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: all var(--transition);
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  button.action-btn:hover {
-    background: var(--orange);
-    color: white;
-    border-color: var(--orange-dark);
-  }
-
-  /* لا يوجد مودات */
-  .no-mods {
-    grid-column: 1/-1;
-    text-align: center;
-    color: var(--muted);
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 40px;
-  }
-
-  /* مودال (نافذة منبثقة) */
-  .modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    z-index: 999;
-  }
-  .modal.active {
-    display: flex;
-  }
-  .modal-content {
-    background: var(--card);
-    border-radius: var(--radius);
-    max-width: 600px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 24px 28px 30px;
-    position: relative;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-  }
-  .modal-close {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: transparent;
-    border: none;
-    font-size: 1.3rem;
-    color: var(--muted);
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-  .modal-close:hover {
-    color: var(--orange);
-  }
-
-  /* نموذج إضافة مود */
-  form label {
-    font-weight: 700;
-    color: var(--orange-dark);
-    display: block;
-    margin-bottom: 6px;
-    margin-top: 12px;
-  }
-  form input[type="text"],
-  form input[type="password"],
-  form input[type="url"],
-  form textarea,
-  form input[type="file"] {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1.8px solid #eee;
-    font-size: 1rem;
-    font-family: 'Cairo', sans-serif;
-    transition: border-color 0.3s ease;
-  }
-  form input[type="text"]:focus,
-  form input[type="password"]:focus,
-  form input[type="url"]:focus,
-  form textarea:focus,
-  form input[type="file"]:focus {
-    outline: none;
-    border-color: var(--orange);
-  }
-  form textarea {
-    min-height: 90px;
-    resize: vertical;
-  }
-
-  form button.submit-btn {
-    margin-top: 18px;
-    background: var(--orange);
-    border: none;
-    color: white;
-    padding: 12px;
-    font-weight: 700;
-    font-size: 1.05rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background var(--transition);
-  }
-  form button.submit-btn:hover {
-    background: var(--orange-dark);
-  }
-  form button.clear-btn {
-    background: #ddd;
-    border: none;
-    padding: 10px 18px;
-    border-radius: var(--radius);
-    color: #555;
-    font-weight: 600;
-    cursor: pointer;
-    margin-left: 12px;
-    transition: background var(--transition);
-  }
-  form button.clear-btn:hover {
-    background: #bbb;
-  }
-
-  /* قسم التفاصيل (مود + تعليقات) */
-  .details {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .details h2 {
-    margin: 0 0 12px 0;
-    color: var(--orange-dark);
-    font-weight: 700;
-  }
-  .details img {
-    border-radius: var(--radius);
-    max-height: 280px;
-    object-fit: cover;
-    width: 100%;
-  }
-  .details p {
-    white-space: pre-wrap;
-    color: var(--text);
-    line-height: 1.3;
-  }
-  .details a.video-link {
-    display: inline-block;
-    margin: 12px 0;
-    padding: 8px 14px;
-    background: var(--orange);
-    color: white;
-    border-radius: var(--radius);
-    font-weight: 700;
-    transition: background 0.3s ease;
-    text-decoration: none;
-  }
-  .details a.video-link:hover {
-    background: var(--orange-dark);
-  }
-
-  /* تعليقات */
-  .comments {
-    border-top: 1px solid #eee;
-    padding-top: 12px;
-  }
-  .comments h3 {
-    margin: 0 0 8px 0;
-    color: var(--emerald);
-  }
-  .comment {
-    border-bottom: 1px solid #eee;
-    padding: 8px 0;
-  }
-  .comment:last-child {
-    border-bottom: none;
-  }
-  .comment .author {
-    font-weight: 700;
-    color: var(--orange-dark);
-  }
-  .comment .text {
-    margin: 4px 0 0 0;
-    color: var(--text);
-    white-space: pre-wrap;
-  }
-  .comment .date {
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-
-  /* نموذج إضافة تعليق */
-  .comment-form label {
-    margin-top: 12px;
-    font-weight: 700;
-    color: var(--emerald);
-  }
-  .comment-form input,
-  .comment-form textarea {
-    border-color: #c8e6c9;
-  }
-  .comment-form button {
-    background: var(--emerald);
-    border: none;
-    color: white;
-    padding: 10px 16px;
-    font-weight: 700;
-    border-radius: var(--radius);
-    cursor: pointer;
-    margin-top: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background 0.3s ease;
-  }
-  .comment-form button:hover {
-    background: #27ae60;
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    main.container {
-      grid-template-columns: 1fr;
-      padding-bottom: 80px;
-    }
-    .mod-body {
-      padding: 12px 10px;
-    }
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>رفع مود - مودات ماين كرافت بالعربية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- أضفنا رقم نسخة لتحديث الكاش -->
+  <link rel="stylesheet" href="style.css?v=20250813" />
 </head>
 <body>
 
-<nav>
-  <a href="#" class="logo" aria-label="الرئيسية"><i class="fa-solid fa-cubes"></i> مودات ماين كرافت بالعربية</a>
-  <button id="openAddMod" aria-haspopup="dialog" aria-controls="addModModal" aria-expanded="false">
-    <i class="fa-solid fa-plus"></i> إضافة مود
-  </button>
+<nav class="nav">
+  <div class="nav-left">
+    <a class="logo" href="index.html"><i class="fa-solid fa-cubes"></i> مودات ماين كرافت بالعربية</a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html">الرئيسية</a>
+    <a href="upload.html">رفع مود</a>
+    <a href="news.html">الأخبار</a>
+  </div>
 </nav>
 
-<main class="container" aria-live="polite" aria-relevant="additions removals">
-  <!-- هنا توضع المودات -->
+<main class="container">
+  <header class="hero small">
+    <h1>رفع مود جديد</h1>
+    <p class="lead">املأ الحقول أدناه ثم اضغط "نشر". يجب إدخال الكود الخاص للنشر.</p>
+  </header>
+
+  <form id="uploadForm" class="card">
+    <label>كود النشر</label>
+    <input id="publishCode" type="text" placeholder="اكتب الكود هنا (مثل ANIS2006)" required />
+
+    <label>اسم المود</label>
+    <input id="modName" type="text" placeholder="مثال: مود الظلال" required />
+
+    <label>وصف المود</label>
+    <textarea id="modDesc" rows="4" placeholder="وصف قصير للمود" required></textarea>
+
+    <label>رابط فيديو (اختياري)</label>
+    <input id="modVideo" type="url" placeholder="https://youtube.com/..." />
+
+    <label>صورة المود (اختياري — اختر ملف)</label>
+    <input id="modImage" type="file" accept="image/*" />
+
+    <div class="actions">
+      <button type="submit" class="btn primary"><i class="fa-solid fa-upload"></i> نشر المود</button>
+      <a href="index.html" class="btn">عودة</a>
+    </div>
+
+    <p class="muted small">ملاحظة: البيانات تحفظ محليًا على متصفحك فقط (LocalStorage). للحفظ الدائم نحتاج سيرفر.</p>
+  </form>
 </main>
 
-<!-- نافذة إضافة مود -->
-<div id="addModModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1" aria-hidden="true">
-  <div class="modal-content">
-    <button class="modal-close" aria-label="إغلاق النافذة" title="إغلاق النافذة"><i class="fa-solid fa-xmark"></i></button>
-    <h2 id="modalTitle" style="color: var(--orange-dark); margin-top: 0;">نشر مود جديد</h2>
-    <form id="addModForm" novalidate>
-      <label for="secretCode">كود النشر</label>
-      <input type="password" id="secretCode" name="secretCode" required autocomplete="off" placeholder="أدخل الكود السري" />
-
-      <label for="modTitle">اسم المود</label>
-      <input type="text" id="modTitle" name="modTitle" required placeholder="مثال: مود الظلال" />
-
-      <label for="modDescription">وصف المود</label>
-      <textarea id="modDescription" name="modDescription" required placeholder="وصف قصير للمود"></textarea>
-
-      <label for="modVideo">رابط فيديو (يوتيوب) - اختياري</label>
-      <input type="url" id="modVideo" name="modVideo" placeholder="https://youtube.com/..." />
-
-      <label for="modImage">صورة المود (JPEG/PNG)</label>
-      <input type="file" id="modImage" name="modImage" accept="image/jpeg,image/png" required />
-
-      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-        <button type="reset" class="clear-btn">مسح الحقول</button>
-        <button type="submit" class="submit-btn"><i class="fa-solid fa-upload"></i> نشر</button>
-      </div>
-      <p style="font-size:0.85rem; color: var(--muted); margin-top:12px;">
-        ملاحظة: النشر والحذف يتطلبان الكود السري <strong>ANIS2006</strong>.  
-        الصور تُرفع إلى Supabase Storage (bucket: <b>mods-images</b>).
-      </p>
-    </form>
-  </div>
-</div>
-
-<!-- نافذة تفاصيل مود + تعليقات -->
-<div id="modDetailsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modDetailsTitle" tabindex="-1" aria-hidden="true">
-  <div class="modal-content" style="max-width: 650px;">
-    <button class="modal-close" aria-label="إغلاق النافذة" title="إغلاق النافذة"><i class="fa-solid fa-xmark"></i></button>
-    <div id="modDetailsContent" tabindex="0"></div>
-  </div>
-</div>
-
-<script>
-  // إعدادات Supabase
-  const SUPABASE_URL = "https://yxsmwhxjjlbmrssmqjkj.supabase.co";
-  const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4c213aHhqamxibXJzc21xamtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5NjczNDMsImV4cCI6MjA3MDU0MzM0M30.rw-AalS6d-TNEGeicePNoVJyJEJFM8wLmeZ_Wk9jS78";
-  const SECRET_CODE = "ANIS2006";
-
-  // إنشاء عميل Supabase
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // عناصر DOM
-  const mainContainer = document.querySelector("main.container");
-  const openAddModBtn = document.getElementById("openAddMod");
-  const addModModal = document.getElementById("addModModal");
-  const modDetailsModal = document.getElementById("modDetailsModal");
-  const modDetailsContent = document.getElementById("modDetailsContent");
-  const addModForm = document.getElementById("addModForm");
-
-  // دالة لفتح النوافذ
-  function openModal(modal) {
-    modal.classList.add("active");
-    modal.setAttribute("aria-hidden", "false");
-    // اجعل التركيز على أول عنصر داخل المحتوى (نموذج أو تفاصيل)
-    const focusElem = modal.querySelector("form, #modDetailsContent");
-    if (focusElem) focusElem.focus();
-  }
-
-  // دالة إغلاق النوافذ
-  function closeModal(modal) {
-    modal.classList.remove("active");
-    modal.setAttribute("aria-hidden", "true");
-  }
-
-  // إغلاق عند الضغط على زر الإغلاق
-  document.querySelectorAll(".modal-close").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      closeModal(btn.closest(".modal"));
-    })
-  );
-
-  // إغلاق عند الضغط خارج المحتوى
-  document.querySelectorAll(".modal").forEach((modal) => {
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) closeModal(modal);
-    });
-  });
-
-  // فتح نافذة إضافة مود عند الضغط على الزر
-  openAddModBtn.addEventListener("click", () => {
-    openModal(addModModal);
-  });
-
-  // وظيفة مساعدة لترميز HTML لتجنب مشاكل XSS
-  function escapeHtml(text) {
-    if (!text) return "";
-    return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-  // تقصير النص لعدد معين من الحروف
-  function truncate(str, n) {
-    return str.length > n ? str.slice(0, n) + "…" : str;
-  }
-
-  // الحصول على رابط عام للصورة من Supabase Storage
-  function getPublicUrl(path) {
-    if (!path) return "";
-    const { data } = supabase.storage.from("mods-images").getPublicUrl(path);
-    return data.publicUrl;
-  }
-
-  // تحميل وعرض المودات
-  async function loadMods() {
-    try
+<script src="script.js?v=20250813"></script>
+</body>
+</html>
