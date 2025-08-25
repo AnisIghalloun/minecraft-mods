@@ -4,9 +4,157 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>رفع مود - مودات ماين كرافت بالعربية</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Cairo', Arial, sans-serif;
+      background: linear-gradient(135deg, #fff7f1 50%, #e6e6ff 100%);
+      color: #232323;
+      margin: 0;
+      min-height: 100vh;
+      direction: rtl;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #f39c12 70%, #d67e07 100%);
+      color: #fff;
+      padding: 10px 5vw;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 22px;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .nav-right a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .nav-right a[aria-current="page"], .nav-right a:hover {
+      background: #fff;
+      color: #f39c12;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 32px 16px 0 16px;
+    }
+    .hero.small {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .hero.small h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      color: #f39c12;
+    }
+    .lead {
+      color: #444;
+      font-size: 17px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(60,60,60,0.07);
+      padding: 28px 18px 17px 18px;
+      margin-bottom: 18px;
+    }
+    .card label {
+      font-weight: 600;
+      color: #f39c12;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .card input, .card textarea {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 11px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font-size: 16px;
+      font-family: inherit;
+      background: #f8f8ff;
+      transition: border-color .2s;
+    }
+    .card input:focus, .card textarea:focus {
+      border-color: #f39c12;
+      outline: none;
+    }
+    .card textarea {
+      resize: vertical;
+    }
+    .actions {
+      display: flex;
+      gap: 14px;
+      margin: 10px 0 5px 0;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: #eee;
+      border: none;
+      border-radius: 7px;
+      padding: 11px 19px;
+      font-size: 17px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      color: #333;
+      transition: background .2s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .btn.primary {
+      background: linear-gradient(90deg, #f39c12 70%, #d67e07 100%);
+      color: #fff;
+    }
+    .btn.primary:hover {
+      background: #d67e07;
+    }
+    .btn:hover {
+      background: #ccc;
+      color: #222;
+    }
+    .muted {
+      color: #888;
+      font-size: 15px;
+      margin-top: 7px;
+    }
+    .small {
+      font-size: 13px;
+    }
+    .success-message, .error-message {
+      background: #d4f5e9;
+      color: #209d56;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .error-message {
+      background: #ffe6e6;
+      color: #c0392b;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 15px 5px; }
+      .card { padding: 15px 7px; }
+      .nav { padding: 10px 2vw; font-size: 15px;}
+      .actions { flex-direction: column; gap: 7px;}
+    }
+  </style>
 </head>
 <body>
 
@@ -27,6 +175,9 @@
     <p class="lead">املأ الحقول أدناه ثم اضغط "نشر". يجب إدخال الكود الخاص للنشر.</p>
   </header>
 
+  <div id="successMsg" class="success-message"></div>
+  <div id="errorMsg" class="error-message"></div>
+
   <form id="uploadForm" class="card" novalidate>
     <label for="publishCode">كود النشر</label>
     <input id="publishCode" type="text" placeholder="اكتب الكود هنا (مثل ANIS2006)" required aria-describedby="codeHelp" />
@@ -44,14 +195,4 @@
     <input id="modImage" type="file" accept="image/*" />
 
     <div class="actions" style="margin-top:16px;">
-      <button type="submit" class="btn primary" aria-label="نشر المود"><i class="fa-solid fa-upload"></i> نشر المود</button>
-      <a href="index.html" class="btn" aria-label="عودة إلى الصفحة الرئيسية">عودة</a>
-    </div>
-
-    <p id="codeHelp" class="muted small" style="margin-top:12px;">ملاحظة: البيانات تحفظ محليًا على متصفحك فقط (LocalStorage). للحفظ الدائم نحتاج سيرفر.</p>
-  </form>
-</main>
-
-<script src="script.js"></script>
-</body>
-</html>
+      <button type="submit" class="btn primary"
