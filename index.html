@@ -4,55 +4,92 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>رفع مود - مودات ماين كرافت بالعربية</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <!-- أضفنا رقم نسخة لتحديث الكاش -->
-  <link rel="stylesheet" href="style.css?v=20250813" />
-</head>
-<body>
-
-<nav class="nav">
-  <div class="nav-left">
-    <a class="logo" href="index.html"><i class="fa-solid fa-cubes"></i> مودات ماين كرافت بالعربية</a>
-  </div>
-  <div class="nav-right">
-    <a href="index.html">الرئيسية</a>
-    <a href="upload.html">رفع مود</a>
-    <a href="news.html">الأخبار</a>
-  </div>
-</nav>
-
-<main class="container">
-  <header class="hero small">
-    <h1>رفع مود جديد</h1>
-    <p class="lead">املأ الحقول أدناه ثم اضغط "نشر". يجب إدخال الكود الخاص للنشر.</p>
-  </header>
-
-  <form id="uploadForm" class="card">
-    <label>كود النشر</label>
-    <input id="publishCode" type="text" placeholder="اكتب الكود هنا (مثل ANIS2006)" required />
-
-    <label>اسم المود</label>
-    <input id="modName" type="text" placeholder="مثال: مود الظلال" required />
-
-    <label>وصف المود</label>
-    <textarea id="modDesc" rows="4" placeholder="وصف قصير للمود" required></textarea>
-
-    <label>رابط فيديو (اختياري)</label>
-    <input id="modVideo" type="url" placeholder="https://youtube.com/..." />
-
-    <label>صورة المود (اختياري — اختر ملف)</label>
-    <input id="modImage" type="file" accept="image/*" />
-
-    <div class="actions">
-      <button type="submit" class="btn primary"><i class="fa-solid fa-upload"></i> نشر المود</button>
-      <a href="index.html" class="btn">عودة</a>
-    </div>
-
-    <p class="muted small">ملاحظة: البيانات تحفظ محليًا على متصفحك فقط (LocalStorage). للحفظ الدائم نحتاج سيرفر.</p>
-  </form>
-</main>
-
-<script src="script.js?v=20250813"></script>
-</body>
-</html>
+  <style>
+    body {
+      font-family: 'Cairo', Arial, sans-serif;
+      background: linear-gradient(135deg, #f7f7f7 60%, #e6e6ff 100%);
+      color: #222;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #ff7f11 70%, #ffb240 100%);
+      padding: 10px 5vw;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 22px;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .nav-right a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-right a:hover {
+      color: #222;
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 32px 16px 0 16px;
+    }
+    .hero.small {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .hero.small h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      color: #ff7f11;
+    }
+    .lead {
+      color: #444;
+      font-size: 17px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(60,60,60,0.07);
+      padding: 28px 18px 17px 18px;
+      margin-bottom: 18px;
+    }
+    .card label {
+      font-weight: 600;
+      color: #2ecc71;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .card input, .card textarea {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 11px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font-size: 16px;
+      font-family: inherit;
+      background: #f8f8ff;
+      transition: border-color .2s;
+    }
+    .card input:focus, .card textarea:focus {
+      border-color: #ff7f11;
+      outline: none;
+    }
+    .card textarea {
+      resize: vertical;
+    }
+    .actions {
+      display: flex;
+      gap: 14px;
